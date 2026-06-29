@@ -19,7 +19,8 @@
       align-items: center;
       background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      overflow: hidden;
+      padding: 20px; /* Gives spacing on small screens */
+      overflow-y: auto; /* FIX: Allows scrolling if the card is bigger than the screen */
       position: relative;
     }
 
@@ -37,25 +38,27 @@
       background: #ffffff;
       border-radius: 24px;
       padding: 24px;
-      width: 360px;
+      width: 100%;
+      max-width: 360px; /* Keeps it perfect size on desktop, responsive on mobile */
       box-shadow: 0 15px 35px rgba(255, 143, 171, 0.35);
       text-align: center;
       z-index: 10;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      margin: auto; /* Centers it perfectly */
     }
 
     .card-container:hover {
       transform: translateY(-8px);
     }
 
-    /* The Image Frame - Using our overflow fix! */
+    /* The Image Frame - Adjusted size for portrait photos */
     .image-frame {
       width: 100%;
-      height: 380px; /* Slightly taller to fit your portrait photo beautifully */
+      height: 300px; /* FIX: Made slightly shorter so everything fits on one screen */
       border-radius: 16px;
-      overflow: hidden; /* Keeps the zoom locked inside the frame */
+      overflow: hidden; 
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .image-frame img {
@@ -73,7 +76,7 @@
     /* Typography */
     h1 {
       color: #ff477e;
-      font-size: 1.7rem;
+      font-size: 1.5rem; /* Slightly smaller to save space */
       margin-bottom: 8px;
     }
 
@@ -81,7 +84,7 @@
       color: #6c757d;
       font-size: 0.95rem;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     /* The Reveal Button */
@@ -125,9 +128,9 @@
 
     /* Active class toggled by JS */
     .hidden-letter.open {
-      max-height: 300px; /* Adjust if your note gets very long */
+      max-height: 300px; 
       opacity: 1;
-      margin-top: 20px;
+      margin-top: 16px;
       padding: 16px;
     }
 
@@ -160,28 +163,23 @@
 </head>
 <body>
 
-  <!-- Floating Background Elements -->
   <div class="sparkle" style="left: 8%; animation-delay: 0s;">❤️</div>
   <div class="sparkle" style="left: 22%; animation-delay: 3s; font-size: 1rem;">✨</div>
   <div class="sparkle" style="left: 78%; animation-delay: 1.5s;">💖</div>
   <div class="sparkle" style="left: 90%; animation-delay: 4.5s; font-size: 1.2rem;">❤️</div>
 
-  <!-- Main Project Card -->
   <div class="card-container">
     <div class="image-frame">
-      <!-- Your image file is linked right here! -->
       <img src="us.jpg" alt="Special Moment">
     </div>
 
     <h1>To My Favorite Person <span class="heart-icon">❤️</span></h1>
     <p class="subtitle">Just a little digital reminder of how incredibly lucky I am to have you in my life.</p>
 
-    <!-- Interactive Button -->
     <button class="reveal-btn" onclick="toggleLetter()">
       <span>Open My Note</span> 💌
     </button>
 
-    <!-- The Hidden Love Letter Box -->
     <div class="hidden-letter" id="loveLetter">
       <p class="letter-text">
         "I wanted to build something completely unique just for you to show you how much you mean to me. You make every ordinary day feel entirely special, and I appreciate every laugh, memory, and moment we share. Thank you for being you!"
@@ -189,7 +187,6 @@
     </div>
   </div>
 
-  <!-- JavaScript to handle the click interaction -->
   <script>
     function toggleLetter() {
       const letter = document.getElementById('loveLetter');
@@ -199,6 +196,10 @@
       
       if(letter.classList.contains('open')) {
         btn.textContent = "Close Note";
+        // Smoothly scroll down to show the letter if it expands past screen bounds
+        setTimeout(() => {
+          letter.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 200);
       } else {
         btn.textContent = "Open My Note";
       }
